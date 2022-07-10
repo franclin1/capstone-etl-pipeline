@@ -1,15 +1,22 @@
-from fastapi import FastAPI, UploadFile, File
-import boto3
+from fastapi import FastAPI, UploadFile, File, Request
+from fastapi.templating import Jinja2Templates
 import uvicorn
 from upload_endpoint import upload_image_to_s3
 
+
 app = FastAPI()
+templates = Jinja2Templates(directory="app/htmldirectory")
 
 
-@app.post("/upload")
-async def root(file: UploadFile):
-    upload_image_to_s3(file)
-    return file.filename
+## file upload
+@app.post("/submit")
+async def root(receipt_image: UploadFile = File(...)):
+    upload_image_to_s3(receipt_image)
+
+## index website
+@app.get("/home/")
+def write_home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 if __name__ == "__main__":
