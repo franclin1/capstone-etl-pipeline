@@ -1,9 +1,9 @@
 resource "aws_instance" "app_server" {
-  iam_instance_profile = "LabInstanceProfile"
+  iam_instance_profile = "receipt-identification-appserver"
   vpc_security_group_ids = [ aws_security_group.inbound_outbound.id ]
-  ami           = "ami-0ca285d4c2cda3300"
+  ami           = "ami-0a1ee2fb28fe05df3"
   instance_type = "t2.micro"
-  key_name = "vockey"
+  key_name = "ec2access"
   subnet_id = aws_subnet.publicsubnet.id
   associate_public_ip_address = "true"
   tags = {
@@ -18,7 +18,7 @@ resource "aws_instance" "app_server" {
       type = "ssh"
       user = "ec2-user"
       host = aws_instance.app_server.public_ip
-      private_key = file("/Users/malteahlers/Downloads/vockey.pem")
+      private_key = file("/Users/malteahlers/Downloads/ec2access.pem")
       port = "22"
     } 
   }

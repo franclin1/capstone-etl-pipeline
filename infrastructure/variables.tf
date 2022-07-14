@@ -1,7 +1,7 @@
-variable "s3_name" {
+variable "image_dump_s3" {
   description = "Name of the S3 bucket"
   type        = string
-  default     = "capstonebucketmalte"
+  default     = "image-dump-s3-cgn-capstone"
 }
 
 

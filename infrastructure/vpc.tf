@@ -14,7 +14,7 @@ resource "aws_internet_gateway" "IGW" {
 resource "aws_subnet" "publicsubnet" {
     vpc_id = aws_vpc.endpoint_vpc.id
     cidr_block = "10.0.1.0/24"
-    availability_zone = "us-west-2a"
+    availability_zone = "eu-central-1a"
 }
 
 resource "aws_route_table" "Public" {
