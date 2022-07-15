@@ -1,2 +1,5 @@
 .DS_Store
 python/.DS_Store
+terraform.tfstate
+backup.sh
+discontinued

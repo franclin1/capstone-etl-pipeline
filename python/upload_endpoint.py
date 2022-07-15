@@ -1,7 +1,7 @@
 import boto3
 
 
-s3_bucket_name = ("testbucketmalte1")
+s3_bucket_name = ("image-dump-s3-cgn-capstone")
 s3 = boto3.resource("s3")
 s3_bucket = s3.Bucket(s3_bucket_name)
 
