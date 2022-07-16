@@ -1,12 +1,17 @@
-variable "image_dump_s3" {
+variable "s3_image_storage" {
   description = "Name of the S3 bucket"
   type        = string
   default     = "image-dump-s3-cgn-capstone"
 }
 
-
-variable "ec2_instance_name" {
-  description = "Value of the Name tag for the EC2 instance"
+variable "aws_ecr_repository_name" {
+  description = "Name of the ecr_repository"
   type        = string
-  default     = "Endpoint_Server"
+  default     = "receipt_ident_repository"
+}
+
+variable "region" {
+  description = "Default region"
+  type = string
+  default = "eu-central-1"
 }

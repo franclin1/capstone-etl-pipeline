@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.27"
     }
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "2.19.0"
+    }
   }
   backend "s3" {
     bucket = "capstone-bucket-malte-cgn-tf-state"
@@ -13,14 +17,5 @@ terraform {
   required_version = ">= 0.14.9"
 }
 
-provider "aws" {
-  profile = "default"
-  region  = "eu-central-1"   
-}
 
-data "aws_caller_identity" "current" {
-}
 
-locals {
-  account_id = data.aws_caller_identity.current.account_id
-}

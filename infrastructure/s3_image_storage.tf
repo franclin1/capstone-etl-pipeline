@@ -1,5 +1,5 @@
-resource "aws_s3_bucket" "image_storage" {
-  bucket = var.image_dump_s3
+resource "aws_s3_bucket" "s3_image_storage" {
+  bucket = var.s3_image_storage
 
   tags = {
     Name        = "Image dump"
