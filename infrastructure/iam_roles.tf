@@ -13,7 +13,7 @@ resource "aws_iam_role" "ecsTaskExecutionRole" {
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
-      },
+      }
     ]
   })
 }
