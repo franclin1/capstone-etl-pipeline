@@ -37,7 +37,7 @@ resource "aws_iam_role_policy" "ecsTaskExecutionRole" {
             ],
         Effect   = "Allow",
         Resource = "*"
-      },
+      }
     ]
   })
 }
