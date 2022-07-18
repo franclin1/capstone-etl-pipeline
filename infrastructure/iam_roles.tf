@@ -56,7 +56,7 @@ resource "aws_iam_role" "allow_ecs_upload_to_s3" {
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
-      },
+      }
     ]
   })
 }
