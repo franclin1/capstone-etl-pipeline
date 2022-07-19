@@ -7,6 +7,12 @@ resource "aws_lambda_function" "differentiate_input_images" {
   timeout       = 25
   handler = "lambda_scr/lambda_differentiate.lambda_handler"
   runtime = "python3.9"
+
+  environment {
+    variables = {
+    s3_bucket_name = aws_s3_bucket.s3_image_storage.bucket
+    }
+  }
 }
 
 ## allow bucket to invoke lambda
