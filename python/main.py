@@ -13,7 +13,7 @@ templates = Jinja2Templates(directory="htmldirectory")
 
 
 ## file upload
-@app.post("/submit")
+@app.post("/upload")
 async def root(receipt_image: UploadFile = File(...)):
     upload_image_to_s3(receipt_image)
     return RedirectResponse("/home", status_code=status.HTTP_302_FOUND)
