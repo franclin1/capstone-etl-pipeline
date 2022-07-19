@@ -1,0 +1,2 @@
+mkdir infrastructure/lambda_scr_build
+zip -r infrastructure/lambda_scr_build/differentiate.zip lambda_scr/lambda_differentiate.py
