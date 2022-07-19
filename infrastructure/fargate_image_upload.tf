@@ -9,7 +9,7 @@ resource "aws_ecr_repository" "receipt_ident_repository" {
 
 resource "docker_registry_image" "endpoint_image" {
   name = "${aws_ecr_repository.receipt_ident_repository.repository_url}"
-
+  
   build {
     platform = "linux/amd64"
     context = "../python"
