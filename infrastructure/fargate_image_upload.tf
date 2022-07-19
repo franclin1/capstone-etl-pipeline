@@ -8,13 +8,12 @@ resource "aws_ecr_repository" "receipt_ident_repository" {
 }
 
 resource "docker_registry_image" "endpoint_image" {
-    name = "${aws_ecr_repository.receipt_ident_repository.repository_url}"
+  name = "${aws_ecr_repository.receipt_ident_repository.repository_url}"
 
-          build {
-          platform = "linux/amd64"
-          context = "../python"
-          dockerfile = "Dockerfile"
-    
+  build {
+    platform = "linux/amd64"
+    context = "../python"
+    dockerfile = "Dockerfile"    
 }
 }
 
@@ -25,9 +24,6 @@ resource "aws_ecs_cluster" "receipt_ident_cluster" {
     name  = "containerInsights"
     value = "enabled"
   }
-}
-resource "aws_ecs_cluster" "example" {
-  name = "my-cluster"
 }
 
 resource "aws_ecs_cluster_capacity_providers" "FARGATE" {
