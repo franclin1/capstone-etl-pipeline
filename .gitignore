@@ -3,4 +3,3 @@ python/.DS_Store
 terraform.tfstate
 backup.sh
 discontinued
-lambda_scr/
