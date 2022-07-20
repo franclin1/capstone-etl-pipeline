@@ -7,16 +7,6 @@ resource "aws_ecr_repository" "receipt_ident_repository" {
   }
 }
 
-resource "docker_registry_image" "endpoint_image" {
-  name = "${aws_ecr_repository.receipt_ident_repository.repository_url}"
-  
-  build {
-    platform = "linux/amd64"
-    context = "../python"
-    dockerfile = "Dockerfile"    
-}
-}
-
 resource "aws_ecs_cluster" "receipt_ident_cluster" {
   name = "receipt_ident_cluster"
 
@@ -51,7 +41,7 @@ resource "aws_ecs_task_definition" "receipt_upload_endpoint" {
 [
   {
     "name": "test_repo",
-    "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.aws_ecr_repository_name}:latest",
+    "image": "${var.aws_caller_identity_current_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.aws_ecr_repository_name}:latest",
     "cpu": 256,
     "memory": 512,
     "essential": true
@@ -71,16 +61,11 @@ resource "aws_ecs_service" "testservice" {
   cluster         = aws_ecs_cluster.receipt_ident_cluster.id
   task_definition = aws_ecs_task_definition.receipt_upload_endpoint.arn
   desired_count   = 1
-  depends_on = [
-    aws_subnet.publicsubnet1,
-    aws_subnet.publicsubnet2,
-    aws_security_group.inbound_outbound,
-    docker_registry_image.endpoint_image
-  ]
+  
 
   network_configuration {
-    subnets = ["${aws_subnet.publicsubnet1.id}","${aws_subnet.publicsubnet2.id}"]
-    security_groups = ["${aws_security_group.inbound_outbound.id}"]
+    subnets = ["${var.publicsubnet1_id}","${var.publicsubnet2_id}"]
+    security_groups = ["${var.security_group_id}"]
     assign_public_ip = true
   }
 }
