@@ -1,6 +1,6 @@
 import boto3
 
-bucket_name = "tests31tests31"
+bucket_name = "BUCKETNAME"
 search_terms_list = ["K-U-N-D-E-N-B-E-L-E-G", "KUNDENBELEG", "KASSENBELEG", "KASSENBON"]
 
 ident_image = "2.jpg"
