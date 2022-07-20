@@ -10,7 +10,7 @@ resource "aws_lambda_function" "differentiate_input_images" {
 
   environment {
     variables = {
-    s3_bucket_name = aws_s3_bucket.s3_image_storage.bucket
+    s3_bucket_name = var.s3_bucket_name
     }
   }
 }
@@ -21,12 +21,12 @@ resource "aws_lambda_permission" "allow_bucket" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.differentiate_input_images.arn
   principal     = "s3.amazonaws.com"
-  source_arn    = aws_s3_bucket.s3_image_storage.arn
+  source_arn    = var.s3_bucket_arn
 }
 
 ## send bucket notification when item is put into s3
 resource "aws_s3_bucket_notification" "bucket_notification" {
-  bucket = aws_s3_bucket.s3_image_storage.id
+  bucket = var.s3_bucket_id
 
  lambda_function {
     lambda_function_arn = aws_lambda_function.differentiate_input_images.arn
