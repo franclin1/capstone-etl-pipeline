@@ -73,7 +73,7 @@ resource "aws_iam_role_policy" "upload_image_to_dump_s3_cgn_capstone" {
           "s3:PutObject",
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:s3:::image-dump-s3-cgn-capstone/*"
+        Resource = "arn:aws:s3:::${var.s3_image_storage}/*"
       },
     ]
   })
@@ -135,8 +135,8 @@ resource "aws_iam_role_policy" "allow_get_delete_s3" {
     ]
   })
 }
-resource "aws_iam_role_policy" "lambda_full_access" {
-  name = "lambda_full_access"
+resource "aws_iam_role_policy" "lambda_event_access" {
+  name = "lambda_event_access"
   role = aws_iam_role.differentiate_lambda_role.id
   
   policy = jsonencode({
@@ -145,52 +145,17 @@ resource "aws_iam_role_policy" "lambda_full_access" {
       {
         Sid = "VisualEditor0"
         Action = [
-          "cloudformation:DescribeStacks",
-                "cloudformation:ListStackResources",
-                "cloudwatch:ListMetrics",
-                "cloudwatch:GetMetricData",
-                "ec2:DescribeSecurityGroups",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "kms:ListAliases",
-                "iam:GetPolicy",
-                "iam:GetPolicyVersion",
-                "iam:GetRole",
-                "iam:GetRolePolicy",
-                "iam:ListAttachedRolePolicies",
-                "iam:ListRolePolicies",
-                "iam:ListRoles",
-                "lambda:*",
-                "logs:DescribeLogGroups",
-                "states:DescribeStateMachine",
-                "states:ListStateMachines",
-                "tag:GetResources",
-                "xray:GetTraceSummaries",
-                "xray:BatchGetTraces"
+          "lambda:GetEventSourceMapping",
         ]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "arn:aws:lambda:*:307752819461:event-source-mapping:${var.s3_image_storage}"
       },
-      {
-            "Effect": "Allow",
-            "Action": "iam:PassRole",
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "iam:PassedToService": "lambda.amazonaws.com"
-                }
-            }
-        },
         {
-            "Effect": "Allow",
-            "Action": [
-                "logs:DescribeLogStreams",
-                "logs:GetLogEvents",
-                "logs:FilterLogEvents"
-            ],
-            "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/*"
+            Sid= "VisualEditor1",
+            Effect= "Allow",
+            Action= "lambda:ListEventSourceMappings",
+            Resource= "*"
         }
-
     ]
   })
 }
