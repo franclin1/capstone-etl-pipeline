@@ -1,9 +1,9 @@
 import boto3
 
-bucket_name = "BUCKETNAME"
-search_terms_list = ["K-U-N-D-E-N-B-E-L-E-G", "KUNDENBELEG", "KASSENBELEG", "KASSENBON"]
+bucket_name = "image-dump-s3-cgn-capstone"
+search_terms_list = ["Rechnung", "Invoice"]
 
-ident_image = "2.jpg"
+ident_image = "doggo.jpg"
 
 def check_for_search_terms():
 
@@ -13,7 +13,6 @@ def check_for_search_terms():
     for image in textdetections:
         for searchterm in search_terms_list:
             if searchterm in image["DetectedText"]:
-                print("RECEIPT IDENTIFIED")
                 return True
     return False
         
