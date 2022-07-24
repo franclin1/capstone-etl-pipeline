@@ -1,1 +1,1 @@
-# capstone-receipt-ident
+# capstone-etl-pipeline
