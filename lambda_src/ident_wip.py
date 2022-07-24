@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import boto3
 import re
 
@@ -11,7 +11,8 @@ s3_source_bucket_name = "image-dump-s3-cgn-capstone"
 s3_bucket = s3.Bucket(s3_source_bucket_name)
 
 class Invoice:
-  def __init__(self, invoice_number):
+  def __init__(self, id, invoice_number):
+    self.id = id
     self.invoice_number = invoice_number
     self.positions = []
 
@@ -77,8 +78,8 @@ def parse_positions_from_file(file_data):
     return positions
 
 def parse_invoice_from_file(file_data):
-    receipt = file_data
-    blocks = receipt["Blocks"]
+    invoice = file_data
+    blocks = invoice["Blocks"]
     for block in blocks:
         if "LINE" in block["BlockType"]:
             block_text = block["Text"]
@@ -90,20 +91,32 @@ def parse_invoice_from_file(file_data):
                         invoice_nr = block_text[index+1:-1]
                         break
                     index = index - 1
-    return Invoice(invoice_nr)
+    id = str(datetime.now())
+    return Invoice(id, invoice_nr)
 
-def put_data_to_dynamodb(invoice, file_name):     
+def put_positons_to_dynamodb_pos(invoice):     
         for position in invoice.positions:
             response = dynamoTable_pos.put_item(
-            Item={
+            Item={   
+                    "Id" : invoice.invoice_number,
                     'Item': position.item,
                     'Price': position.price,
                     'Quantity': position.quantity,
                 }
             )
-        #s3.Object(s3_source_bucket_name, file_name).delete()
         return response
 
+def put_invoice_no_to_dynamodb_invoice(invoice):     
+        response = dynamoTable_invoice.put_item(
+        Item={   
+                "Id" : invoice.id,
+                'Invoice No.': invoice.invoice_number
+            }
+        )
+        return response
+
+def delete_file_from_s3(file_name):
+    s3.Object(s3_source_bucket_name, file_name).delete()
 
 def handle(event, context):
     #Load positions
@@ -116,8 +129,9 @@ def handle(event, context):
     file_data = fetch_invoice_data_from_file(file_name) 
     invoice = parse_invoice_from_file(file_data)
     invoice.positions = positions
-    print("s")
-    put_data_to_dynamodb(invoice, file_name)
+    put_positons_to_dynamodb_pos(invoice)
+    put_invoice_no_to_dynamodb_invoice(invoice)
+    #delete_file_from_s3(file_name)
 
 
  
