@@ -1,12 +1,14 @@
 from datetime import datetime
 import boto3
 import re
+import os
 
 s3 = boto3.resource("s3")
 dynamoDB = boto3.resource("dynamodb")
 textract = boto3.client("textract")
 dynamoTable_pos = dynamoDB.Table("Positions")
 dynamoTable_invoice = dynamoDB.Table("Invoices")
+#s3_source_bucket_name = os.environ["s3_bucket_name"]
 s3_source_bucket_name = "image-dump-s3-cgn-capstone"
 s3_bucket = s3.Bucket(s3_source_bucket_name)
 
@@ -16,9 +18,9 @@ class Invoice:
     self.invoice_number = invoice_number
     self.positions = []
 
-
 class Position:
-  def __init__(self, item, quantity, price):
+  def __init__(self, id, item, quantity, price):
+    self.id = id 
     self.item = item
     self.quantity = quantity
     self.price = price
@@ -60,6 +62,7 @@ def parse_positions_from_file(file_data):
     receipt = file_data
     expensedocuments = receipt["ExpenseDocuments"]
     positions = []
+    pos_count = 1
     for category in expensedocuments:
         if "LineItemGroups" in category:
             LineItemGroups = category["LineItemGroups"]
@@ -70,8 +73,10 @@ def parse_positions_from_file(file_data):
                     item_name = LineItemExpenseFields[1]["ValueDetection"]["Text"]
                     item_quantity = LineItemExpenseFields[2]["ValueDetection"]["Text"]
                     item_price = LineItemExpenseFields[4]["ValueDetection"]["Text"]
+                    id = "Pos "+str(pos_count)
+                    pos_count += 1
                     
-                    position = Position(item_name, item_quantity, item_price)
+                    position = Position(id, item_name, item_quantity, item_price)
                     if list_contains_items(position, positions):
                         continue
                     positions.append(position)
@@ -79,6 +84,7 @@ def parse_positions_from_file(file_data):
 
 def parse_invoice_from_file(file_data):
     invoice = file_data
+    invoice_number = ""
     blocks = invoice["Blocks"]
     for block in blocks:
         if "LINE" in block["BlockType"]:
@@ -88,17 +94,18 @@ def parse_invoice_from_file(file_data):
                 index = search.start()
                 while index > 0:
                     if block_text[index] == " ":
-                        invoice_nr = block_text[index+1:-1]
+                        invoice_number = block_text[index+1:-1]
                         break
                     index = index - 1
     id = str(datetime.now())
-    return Invoice(id, invoice_nr)
+    return Invoice(id, invoice_number)
 
-def put_positons_to_dynamodb_pos(invoice):     
+def put_positons_to_dynamodb_pos(invoice):
         for position in invoice.positions:
             response = dynamoTable_pos.put_item(
             Item={   
-                    "Id" : invoice.invoice_number,
+                    "Id" : position.id,
+                    "Invoice_No" : invoice.invoice_number,
                     'Item': position.item,
                     'Price': position.price,
                     'Quantity': position.quantity,
@@ -118,7 +125,7 @@ def put_invoice_no_to_dynamodb_invoice(invoice):
 def delete_file_from_s3(file_name):
     s3.Object(s3_source_bucket_name, file_name).delete()
 
-def handle(event, context):
+def lambda_handler(event, context):
     #Load positions
     file_position_name = fetch_file_name(s3_bucket)
     file_position_data = fetch_position_data_from_file(file_position_name) 
@@ -136,6 +143,6 @@ def handle(event, context):
 
  
 if __name__ == "__main__": 
-    handle({},{})
+    lambda_handler({},{})
 
 

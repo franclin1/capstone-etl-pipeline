@@ -2,4 +2,4 @@
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
-lambda_scr_build
+lambda_src_build

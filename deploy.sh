@@ -1,3 +1,4 @@
+sh buildCode.sh
 cd ./infrastructure
 sh setting_up_state_s3.sh
 terraform init
