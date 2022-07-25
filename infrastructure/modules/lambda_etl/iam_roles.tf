@@ -1,7 +1,5 @@
-### allow differentiate to work####
-
-resource "aws_iam_role" "differentiate_lambda_role" {
-  name = "differentiate_lambda_role"
+resource "aws_iam_role" "etl_lambda_role" {
+  name = "etl_lambda_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -17,10 +15,9 @@ resource "aws_iam_role" "differentiate_lambda_role" {
     ]
   })
 }
-
-resource "aws_iam_role_policy" "allow_detect_text" {
-  name = "allow_detect_text"
-  role = aws_iam_role.differentiate_lambda_role.id
+resource "aws_iam_role_policy" "allow_textract" {
+  name = "allow_textract"
+  role = aws_iam_role.etl_lambda_role.id
   
   policy = jsonencode({
     Version = "2012-10-17"
@@ -28,7 +25,8 @@ resource "aws_iam_role_policy" "allow_detect_text" {
       {
         Sid = "VisualEditor0"
         Action = [
-          "rekognition:DetectText",
+          "textract:AnalyzeExpense",
+          "textract:DetectDocumentText"
         ]
         Effect   = "Allow"
         Resource = "*"
@@ -36,9 +34,10 @@ resource "aws_iam_role_policy" "allow_detect_text" {
     ]
   })
 }
+
 resource "aws_iam_role_policy" "allow_get_delete_s3" {
   name = "allow_get_delete_on_s3"
-  role = aws_iam_role.differentiate_lambda_role.id
+  role = aws_iam_role.etl_lambda_role.id
   
   policy = jsonencode({
     Version = "2012-10-17"
@@ -47,17 +46,21 @@ resource "aws_iam_role_policy" "allow_get_delete_s3" {
         Sid = "VisualEditor0"
         Action = [
           "s3:GetObject",
-          "s3:DeleteObject"
+          "s3:DeleteObject",
+          "s3:ListBucket"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:s3:::image-dump-s3-cgn-capstone/*"
-      },
+        Resource = ["arn:aws:s3:::image-dump-s3-cgn-capstone/*", 
+                    "arn:aws:s3:::image-dump-s3-cgn-capstone"
+        ]                
+      }
     ]
   })
 }
-resource "aws_iam_role_policy" "lambda_event_access" {
-  name = "lambda_event_access"
-  role = aws_iam_role.differentiate_lambda_role.id
+
+resource "aws_iam_role_policy" "allow_dynamoDB_write" {
+  name = "allow_dynamoDB_write"
+  role = aws_iam_role.etl_lambda_role.id
   
   policy = jsonencode({
     Version = "2012-10-17"
@@ -65,17 +68,11 @@ resource "aws_iam_role_policy" "lambda_event_access" {
       {
         Sid = "VisualEditor0"
         Action = [
-          "lambda:GetEventSourceMapping",
+          "dynamoDB:PutItem"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:lambda:*:307752819461:event-source-mapping:${var.s3_bucket_name}"
+        Resource = "arn:aws:dynamodb:*:307752819461:table/*"
       },
-        {
-            Sid= "VisualEditor1",
-            Effect= "Allow",
-            Action= "lambda:ListEventSourceMappings",
-            Resource= "*"
-        }
     ]
   })
 }

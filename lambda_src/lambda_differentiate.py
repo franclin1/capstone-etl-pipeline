@@ -2,9 +2,10 @@ import boto3
 import os 
 
 
-
+lambda_client = boto3.client("lambda")
 bucket_name = os.environ["s3_bucket_name"]
-search_terms_list = ["K-U-N-D-E-N-B-E-L-E-G", "KUNDENBELEG", "KASSENBELEG", "KASSENBON"]
+#lambda_etl_arn = os.environ["etl_function_arn"]
+search_terms_list = ["Rechnung", "Invoice"]
 
 
 def extract_file_name(event):
@@ -21,10 +22,11 @@ def check_for_search_terms(file_name):
     response = client.detect_text(Image={'S3Object': {'Bucket': bucket_name,'Name': file_name}})
     textdetections  = response["TextDetections"]
     for line in textdetections:
+        text_to_check = line["DetectedText"]
         for searchterm in search_terms_list:
-            if searchterm in line["DetectedText"]:
-                state = True
-            return state
+            if searchterm in text_to_check:
+                return True
+    return False
     
         
 def delete_object_non_receipt(state, file_name):
@@ -34,14 +36,21 @@ def delete_object_non_receipt(state, file_name):
     return False
 
 
+def invoke_etl_lambda():
+        lambda_client.invoke(
+        FunctionArn = lambda_etl_arn,
+        InvocationType = "Event"
+    )
+
+
 
 def lambda_handler(event, context):
     file_name=extract_file_name(event)
     check_for_search_terms(file_name)
     state = check_for_search_terms(file_name)
     delete_object_non_receipt(state, file_name)
-    return {
-        'statusCode': 200,
-        'body': file_name
-    }
+    #invoke_etl_lambda()
 
+
+if __name__ == "__main__": 
+    lambda_handler({},{})

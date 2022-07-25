@@ -1,2 +1,3 @@
-mkdir infrastructure/lambda_scr_build
-zip -r infrastructure/lambda_scr_build/differentiate.zip lambda_scr/lambda_differentiate.py
+mkdir infrastructure/lambda_src_build
+zip -r infrastructure/lambda_src_build/differentiate.zip lambda_src/lambda_differentiate.py
+zip -r infrastructure/lambda_src_build/etl.zip lambda_src/lambda_etl.py

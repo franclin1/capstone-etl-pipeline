@@ -1,11 +1,11 @@
 ## function
 
 resource "aws_lambda_function" "differentiate_input_images" {
-  filename      = "lambda_scr_build/differentiate.zip"
+  filename      = "lambda_src_build/differentiate.zip"
   function_name = "differentiate_input_images"
   role          = aws_iam_role.differentiate_lambda_role.arn
   timeout       = 60
-  handler = "lambda_scr/lambda_differentiate.lambda_handler"
+  handler = "lambda_src/lambda_differentiate.lambda_handler"
   runtime = "python3.9"
 
   environment {

@@ -19,11 +19,16 @@ terraform {
 
 
 ### Modules ####
-module "lambda" {
+module "lambda_differentiate" {
 	source = "./modules/lambda_differentiate"
   s3_bucket_name = module.image_storage.s3_bucket_name
   s3_bucket_arn = module.image_storage.s3_bucket_arn
   s3_bucket_id = module.image_storage.s3_bucket_id
+  etl_function_arn = module.lambda_etl.etl_function_arn
+}
+module "lambda_etl" {
+	source = "./modules/lambda_etl"
+  s3_bucket_name = module.image_storage.s3_bucket_name
 }
 module "image_storage" {
 	source = "./modules/image_storage"

@@ -10,3 +10,7 @@ variable "s3_bucket_id" {
   description = "Name of the S3 bucket"
   type        = string
 }
+variable "etl_function_arn" {
+  description = "Arn of etl function"
+  type        = string
+}
