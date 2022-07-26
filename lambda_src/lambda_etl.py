@@ -9,7 +9,7 @@ textract = boto3.client("textract")
 dynamoTable_pos = dynamoDB.Table("Positions")
 dynamoTable_invoice = dynamoDB.Table("Invoices")
 #s3_source_bucket_name = os.environ["s3_bucket_name"]
-s3_source_bucket_name = "image-dump-s3-cgn-capstone"
+s3_source_bucket_name = "tests31tests31"
 s3_bucket = s3.Bucket(s3_source_bucket_name)
 
 class Invoice:
@@ -86,18 +86,20 @@ def parse_positions_from_file(file_data):
 def parse_invoice_from_file(file_data):
     invoice = file_data
     invoice_number = ""
+    matchwords = ["Rechnung Nr.", "Rechnungsnummer", "Rechnungsnummer:"]
     blocks = invoice["Blocks"]
     for block in blocks:
         if "LINE" in block["BlockType"]:
             block_text = block["Text"]
-            if (block_text.find("Rechnung Nr.") != -1):
-                search = re.search(r"\d",  block_text)
-                index = search.start()
-                while index > 0:
-                    if block_text[index] == " ":
-                        invoice_number = block_text[index+1:-1]
-                        break
-                    index = index - 1
+            for matchword in matchwords:
+                if (block_text.find(matchword) != -1):
+                    search = re.search(r"\d",  block_text)
+                    index = search.start()
+                    while index > 0:
+                        if block_text[index] == " ":
+                            invoice_number = block_text[index+1:-1]
+                            break
+                        index = index - 1
     id = str(datetime.now())
     return Invoice(id, invoice_number)
 

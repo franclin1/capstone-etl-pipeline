@@ -5,7 +5,7 @@ import os
 lambda_client = boto3.client("lambda")
 bucket_name = os.environ["s3_bucket_name"]
 lambda_etl_arn = os.environ["etl_function_arn"]
-search_terms_list = ["Rechnung", "Invoice"]
+search_terms_list = ["Rechnung", "Invoice", "Beleg"]
 
 
 def extract_file_name(event):
