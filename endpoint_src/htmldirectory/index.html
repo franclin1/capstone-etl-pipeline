@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>     
+        <meta charset="UTF-8">
+        <title>invoice extract transform load pipeline</title>
+    </head>
+<body>
+<link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" multiple>
+    <p>Drag your files here or click in this area.</p>
+    <button type="submit">Upload invoice</button>
+  </form>
+
+</body>
+</html>
+
