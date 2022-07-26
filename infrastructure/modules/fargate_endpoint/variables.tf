@@ -2,7 +2,7 @@ variable "region" {
   description = "Default region"
   type = string
 }
-variable "s3_image_storage" {
+variable "s3_bucket_name" {
   description = "s3_image_storage"
   type        = string
 }

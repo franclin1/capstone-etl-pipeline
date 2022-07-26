@@ -44,7 +44,8 @@ resource "aws_ecs_task_definition" "receipt_upload_endpoint" {
     "image": "${var.aws_caller_identity_current_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.aws_ecr_repository_name}:latest",
     "cpu": 256,
     "memory": 512,
-    "essential": true
+    "essential": true,
+    "environment" : [{"name": "s3_bucket_name", "value" : "${var.s3_bucket_name}"}]
   }
 ]
 TASK_DEFINITION
@@ -55,8 +56,9 @@ TASK_DEFINITION
   }
 }
 
-resource "aws_ecs_service" "testservice" {
-  name            = "testservice"
+
+resource "aws_ecs_service" "upload_endpoint" {
+  name            = "upload_endpoint"
   launch_type = "FARGATE"
   cluster         = aws_ecs_cluster.receipt_ident_cluster.id
   task_definition = aws_ecs_task_definition.receipt_upload_endpoint.arn

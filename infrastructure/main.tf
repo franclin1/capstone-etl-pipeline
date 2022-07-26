@@ -34,7 +34,7 @@ module "lambda_differentiate" {
   depends_on = [
     module.lambda_etl
   ]
-
+  
 }
 module "image_storage" {
 	source = "./modules/image_storage"
@@ -47,7 +47,7 @@ module "fargate_endpoint" {
 	source = "./modules/fargate_endpoint"
   aws_ecr_repository_name = var.aws_ecr_repository_name
   region = var.region
-  s3_image_storage = module.image_storage.s3_bucket_name
+  s3_bucket_name = module.image_storage.s3_bucket_name
   aws_caller_identity_current_account_id = data.aws_caller_identity.current.account_id
   publicsubnet1_id = module.vpc.publicsubnet1_id
   publicsubnet2_id = module.vpc.publicsubnet2_id
