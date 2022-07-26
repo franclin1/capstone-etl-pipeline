@@ -4,7 +4,7 @@ import os
 
 lambda_client = boto3.client("lambda")
 bucket_name = os.environ["s3_bucket_name"]
-#lambda_etl_arn = os.environ["etl_function_arn"]
+lambda_etl_arn = os.environ["etl_function_arn"]
 search_terms_list = ["Rechnung", "Invoice"]
 
 
@@ -38,7 +38,7 @@ def delete_object_non_receipt(state, file_name):
 
 def invoke_etl_lambda():
         lambda_client.invoke(
-        FunctionArn = lambda_etl_arn,
+        FunctionName = lambda_etl_arn,
         InvocationType = "Event"
     )
 
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
     check_for_search_terms(file_name)
     state = check_for_search_terms(file_name)
     delete_object_non_receipt(state, file_name)
-    #invoke_etl_lambda()
+    invoke_etl_lambda()
 
 
 if __name__ == "__main__": 

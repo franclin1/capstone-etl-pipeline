@@ -11,6 +11,7 @@ resource "aws_lambda_function" "differentiate_input_images" {
   environment {
     variables = {
     s3_bucket_name = var.s3_bucket_name
+    etl_function_arn = var.etl_function_arn
     }
   }
 }

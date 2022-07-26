@@ -14,3 +14,7 @@ variable "etl_function_arn" {
   description = "Arn of etl function"
   type        = string
 }
+variable "region" {
+  description = "Arn of etl function"
+  type        = string
+}

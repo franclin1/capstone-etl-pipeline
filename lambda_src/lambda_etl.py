@@ -64,6 +64,7 @@ def parse_positions_from_file(file_data):
     positions = []
     pos_count = 1
     for category in expensedocuments:
+        #maybe reverse
         if "LineItemGroups" in category:
             LineItemGroups = category["LineItemGroups"]
             for LineItem in LineItemGroups:

@@ -1,5 +1,4 @@
 ### allow differentiate to work####
-
 resource "aws_iam_role" "differentiate_lambda_role" {
   name = "differentiate_lambda_role"
 
@@ -17,7 +16,6 @@ resource "aws_iam_role" "differentiate_lambda_role" {
     ]
   })
 }
-
 resource "aws_iam_role_policy" "allow_detect_text" {
   name = "allow_detect_text"
   role = aws_iam_role.differentiate_lambda_role.id
@@ -76,6 +74,25 @@ resource "aws_iam_role_policy" "lambda_event_access" {
             Action= "lambda:ListEventSourceMappings",
             Resource= "*"
         }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "allow_invoke_lambda_etl" {
+  name = "allow_invoke_lambda_etl"
+  role = aws_iam_role.differentiate_lambda_role.id
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "VisualEditor0"
+        Action = [
+          "lambda:InvokeFunction"
+        ]
+        Effect   = "Allow"
+        Resource = "${var.etl_function_arn}"
+      },
     ]
   })
 }
