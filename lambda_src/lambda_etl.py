@@ -27,8 +27,8 @@ class Position:
 
 
 def fetch_file_name(s3_bucket):
-    for receipt in s3_bucket.objects.all():
-        file_name = receipt.key
+    for invoice in s3_bucket.objects.all():
+        file_name = invoice.key
     return file_name
 
 def fetch_position_data_from_file(file_name):
