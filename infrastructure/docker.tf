@@ -3,7 +3,7 @@ resource "docker_registry_image" "endpoint_image" {
   
   build {
     platform = "linux/amd64"
-    context = "../python"
+    context = "../endpoint_src"
     dockerfile = "Dockerfile"    
 }
 }

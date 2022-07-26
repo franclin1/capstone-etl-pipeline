@@ -5,6 +5,7 @@ COPY main.py main.py
 COPY upload_endpoint.py upload_endpoint.py
 COPY requirements.txt requirements.txt
 COPY /htmldirectory/ /app/htmldirectory
+COPY /static        /app/static
 RUN pip3 install -r requirements.txt
 EXPOSE 80
 CMD ["python3", "main.py", "--host=0.0.0.0"]

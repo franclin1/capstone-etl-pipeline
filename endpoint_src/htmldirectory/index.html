@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-
 <html lang="en">
-    <head>     
+    <head>
         <meta charset="UTF-8">
-        <title>invoice extract transform load pipeline</title>
+        <title>Invoice upload frontend</title>
     </head>
 <body>
+<h1>Invoice Upload</h1>
 <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" multiple>
-    <p>Drag your files here or click in this area.</p>
+<form action="upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="receipt_image">
+    <p>Drag your files here or click in this area</p>
     <button type="submit">Upload invoice</button>
   </form>
 

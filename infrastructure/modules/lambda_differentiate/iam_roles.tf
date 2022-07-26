@@ -77,7 +77,6 @@ resource "aws_iam_role_policy" "lambda_event_access" {
     ]
   })
 }
-
 resource "aws_iam_role_policy" "allow_invoke_lambda_etl" {
   name = "allow_invoke_lambda_etl"
   role = aws_iam_role.differentiate_lambda_role.id
