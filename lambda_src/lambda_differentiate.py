@@ -1,12 +1,11 @@
 import boto3
-import os 
+import os
 
 
 lambda_client = boto3.client("lambda")
 bucket_name = os.environ["s3_bucket_name"]
 lambda_etl_arn = os.environ["etl_function_arn"]
 search_terms_list = ["Rechnung", "Invoice", "Beleg"]
-
 
 def extract_file_name(event):
     for record in event["Records"]:
@@ -18,18 +17,19 @@ def extract_file_name(event):
     
 
 def check_for_search_terms(file_name):
-    client = boto3.client("rekognition")
-    response = client.detect_text(Image={'S3Object': {'Bucket': bucket_name,'Name': file_name}})
-    textdetections  = response["TextDetections"]
-    for line in textdetections:
-        text_to_check = line["DetectedText"]
-        for searchterm in search_terms_list:
-            if searchterm in text_to_check:
-                return True
+    client = boto3.client("textract")
+    response = client.detect_document_text(Document={'S3Object': {'Bucket': bucket_name,'Name': file_name}})
+    blocks  = response["Blocks"]
+    for entry in blocks:
+        if "Text" in entry:
+            text_to_check = entry["Text"]
+            for searchterm in search_terms_list:
+                if searchterm in text_to_check:
+                    return True
     return False
     
         
-def delete_object_non_receipt(state, file_name):
+def delete_object_non_invoice(state, file_name):
     client = boto3.client("s3", region_name="eu-central-1")
     if state != True:
         client.delete_object(Bucket=bucket_name, Key=file_name)
@@ -46,9 +46,10 @@ def invoke_etl_lambda():
 
 def lambda_handler(event, context):
     file_name=extract_file_name(event)
+    file_name = "Rechnungsvorlage-Muster.pdf"
     check_for_search_terms(file_name)
     state = check_for_search_terms(file_name)
-    delete_object_non_receipt(state, file_name)
+    delete_object_non_invoice(state, file_name)
     invoke_etl_lambda()
 
 
