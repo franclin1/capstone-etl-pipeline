@@ -8,8 +8,7 @@ dynamoDB = boto3.resource("dynamodb")
 textract = boto3.client("textract")
 dynamoTable_pos = dynamoDB.Table("Positions")
 dynamoTable_invoice = dynamoDB.Table("Invoices")
-#s3_source_bucket_name = os.environ["s3_bucket_name"]
-s3_source_bucket_name = "tests31tests31"
+s3_source_bucket_name = os.environ["s3_bucket_name"]
 s3_bucket = s3.Bucket(s3_source_bucket_name)
 
 class Invoice:

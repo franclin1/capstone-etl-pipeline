@@ -16,8 +16,8 @@ resource "aws_iam_role" "differentiate_lambda_role" {
     ]
   })
 }
-resource "aws_iam_role_policy" "allow_detect_text" {
-  name = "allow_detect_text"
+resource "aws_iam_role_policy" "allow_detect_document_text" {
+  name = "allow_detect_document_text"
   role = aws_iam_role.differentiate_lambda_role.id
   
   policy = jsonencode({
@@ -26,7 +26,7 @@ resource "aws_iam_role_policy" "allow_detect_text" {
       {
         Sid = "VisualEditor0"
         Action = [
-          "rekognition:DetectText",
+          "textract:DetectDocumentText",
         ]
         Effect   = "Allow"
         Resource = "*"
