@@ -19,6 +19,9 @@ terraform {
 
 
 ### Modules ####
+module "dynamoDB" {
+	source = "./modules/dynamoDB"
+}
 module "lambda_etl" {
 	source = "./modules/lambda_etl"
   s3_bucket_name = module.image_storage.s3_bucket_name

@@ -139,7 +139,7 @@ def lambda_handler(event, context):
     invoice = parse_invoice_from_file(file_data)
     invoice.positions = positions
     put_positons_to_dynamodb_pos(invoice)
-    put_invoice_no_to_dynamodb_invoice(invoice)
+    #put_invoice_no_to_dynamodb_invoice(invoice)
     delete_file_from_s3(file_name)
 
 
