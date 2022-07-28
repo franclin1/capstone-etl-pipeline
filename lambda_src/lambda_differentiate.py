@@ -46,7 +46,6 @@ def invoke_etl_lambda():
 
 def lambda_handler(event, context):
     file_name=extract_file_name(event)
-    file_name = "Rechnungsvorlage-Muster.pdf"
     check_for_search_terms(file_name)
     state = check_for_search_terms(file_name)
     delete_object_non_invoice(state, file_name)
