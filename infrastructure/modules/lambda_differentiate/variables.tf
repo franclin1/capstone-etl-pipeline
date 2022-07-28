@@ -18,3 +18,7 @@ variable "region" {
   description = "Arn of etl function"
   type        = string
 }
+variable "account_id" {
+  description = "account_id"
+  type        = string
+}

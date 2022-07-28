@@ -50,8 +50,8 @@ resource "aws_iam_role_policy" "allow_get_delete_s3" {
           "s3:ListBucket"
         ]
         Effect   = "Allow"
-        Resource = ["arn:aws:s3:::image-dump-s3-cgn-capstone/*", 
-                    "arn:aws:s3:::image-dump-s3-cgn-capstone"
+        Resource = ["${var.s3_bucket_arn}/*",
+          "${var.s3_bucket_arn}"
         ]                
       }
     ]
@@ -71,7 +71,7 @@ resource "aws_iam_role_policy" "allow_dynamoDB_write" {
           "dynamoDB:PutItem"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:dynamodb:*:307752819461:table/*"
+        Resource = "${var.dynamoDB_arn}"
       },
     ]
   })

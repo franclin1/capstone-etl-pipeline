@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "allow_get_delete_s3" {
           "s3:DeleteObject"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:s3:::image-dump-s3-cgn-capstone/*"
+        Resource = "arn:aws:s3:::${var.s3_bucket_name}/*"
       },
     ]
   })
@@ -66,7 +66,7 @@ resource "aws_iam_role_policy" "lambda_event_access" {
           "lambda:GetEventSourceMapping",
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:lambda:*:307752819461:event-source-mapping:${var.s3_bucket_name}"
+        Resource = "arn:aws:lambda:*:${var.account_id}:event-source-mapping:${var.s3_bucket_name}"
       },
         {
             Sid= "VisualEditor1",

@@ -60,6 +60,7 @@ resource "aws_iam_role" "allow_ecs_upload_to_s3" {
     ]
   })
 }
+
 resource "aws_iam_role_policy" "upload_image_to_dump_s3_cgn_capstone" {
   name = "upload_image_to_dump_s3_cgn_capstone"
   role = aws_iam_role.allow_ecs_upload_to_s3.id
@@ -75,6 +76,24 @@ resource "aws_iam_role_policy" "upload_image_to_dump_s3_cgn_capstone" {
         Effect   = "Allow"
         Resource = "arn:aws:s3:::${var.s3_bucket_name}/*"
       },
+    ]
+  })
+}
+
+### allow_dynamoDB_scan ### 
+
+resource "aws_iam_role_policy" "allow_dynamDB_scan" {
+  name = "allow_dynamDB_scan"
+  role = aws_iam_role.allow_ecs_upload_to_s3.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "dynamodb:Scan"
+        Effect = "Allow"
+        Sid    = "VisualEditor0"
+        Resource = "${var.dynamoDB_arn}"
+      }
     ]
   })
 }

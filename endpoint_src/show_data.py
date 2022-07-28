@@ -1,7 +1,7 @@
 import boto3
 import os 
 
-
+#dynamoDB_table_name = os.environ["dynamoDB_name"]
 dynamoDB_table_name = "Positions"
 dynamoDB = boto3.resource('dynamodb')
 dynamoDB_table = dynamoDB.Table(dynamoDB_table_name)

@@ -3,6 +3,7 @@ WORKDIR /app
 ENV AWS_DEFAULT_REGION=eu-central-1
 COPY main.py main.py
 COPY upload_endpoint.py upload_endpoint.py
+COPY show_data.py show_data.py
 COPY requirements.txt requirements.txt
 COPY /htmldirectory/ /app/htmldirectory
 COPY /static        /app/static
