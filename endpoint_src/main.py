@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from upload_endpoint import upload_image_to_s3
-
+from show_data import present_data
 
 
 app = FastAPI()
@@ -24,6 +24,13 @@ async def root(receipt_image: UploadFile = File(...)):
 def write_home(request: Request):
    return templates.TemplateResponse("index.html", {"request": request})
     
+@app.get("/present", response_class=HTMLResponse)
+def write_home(request: Request):
+    data = present_data()
+    headings = ("Productname", "Price", "Quantity", "Invoice_No")
+    return templates.TemplateResponse("present_data.html", {"request": request, "data" : data, "headings": headings})
+
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=80)

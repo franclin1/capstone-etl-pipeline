@@ -1,18 +1,18 @@
 resource "aws_dynamodb_table" "basic-dynamodb-table" {
-  name           = "Positions"
+  name           = "${var.dynamoDB_name}"
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = "Id"
-  range_key      = "Invoice_No"
+  hash_key       = "${var.dynamoDB_hashkey}"
+  range_key      = "${var.dynamoDB_sort_key}"
 
   attribute {
-    name = "Id"
+    name = "${var.dynamoDB_hashkey}"
     type = "S"
   }
 
  attribute {
-    name = "Invoice_No"
+    name = "${var.dynamoDB_sort_key}"
     type = "S"
   }
 

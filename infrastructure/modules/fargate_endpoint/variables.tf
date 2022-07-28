@@ -26,3 +26,7 @@ variable "security_group_id" {
   description = "sec group"
   type        = string
 }
+variable "dynamoDB_arn" {
+  description = "ARN of my dynamoDB"
+  type = string 
+}

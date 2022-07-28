@@ -21,10 +21,15 @@ terraform {
 ### Modules ####
 module "dynamoDB" {
 	source = "./modules/dynamoDB"
+  dynamoDB_name = var.dynamoDB_name
+  dynamoDB_hashkey = var.dynamoDB_hashkey
+  dynamoDB_sort_key = var.dynamoDB_sort_key
 }
 module "lambda_etl" {
 	source = "./modules/lambda_etl"
   s3_bucket_name = module.image_storage.s3_bucket_name
+  dynamoDB_arn = module.dynamoDB.dynamoDB_arn
+  s3_bucket_arn = module.image_storage.s3_bucket_arn
 }
 module "lambda_differentiate" {
 	source = "./modules/lambda_differentiate"
@@ -33,6 +38,7 @@ module "lambda_differentiate" {
   s3_bucket_id = module.image_storage.s3_bucket_id
   etl_function_arn = module.lambda_etl.etl_function_arn
   region = var.region
+  account_id = local.account_id
 
   depends_on = [
     module.lambda_etl
@@ -55,5 +61,6 @@ module "fargate_endpoint" {
   publicsubnet1_id = module.vpc.publicsubnet1_id
   publicsubnet2_id = module.vpc.publicsubnet2_id
   security_group_id = module.vpc.security_group_id
+  dynamoDB_arn =  module.dynamoDB.dynamoDB_arn
 }
 
