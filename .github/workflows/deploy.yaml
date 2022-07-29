@@ -21,8 +21,7 @@ jobs:
           sh setting_up_state_s3.sh
       - name: building lambda source codes
         run: |
-          cd src
-          sh build_source_code.sh
+          sh buildCode.sh
       - name: deploy whole infrastructure via hcl
         run: |
           cd infrastructure
