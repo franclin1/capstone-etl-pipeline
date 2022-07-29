@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "receipt_upload_endpoint" {
     "cpu": 256,
     "memory": 512,
     "essential": true,
-    "environment" : [{"name": "s3_bucket_name", "value" : "${var.s3_bucket_name}"}]
+    "environment" : [{"name": "s3_bucket_name", "value" : "${var.s3_bucket_name}"},{"name": "dynamoDB_name", "value" : "${var.dynamoDB_name}"}]
   }
 ]
 TASK_DEFINITION

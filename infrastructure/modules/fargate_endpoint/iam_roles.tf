@@ -74,7 +74,9 @@ resource "aws_iam_role_policy" "upload_image_to_dump_s3_cgn_capstone" {
           "s3:PutObject",
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:s3:::${var.s3_bucket_name}/*"
+        Resource = ["arn:aws:s3:::${var.s3_bucket_name}/*.jpg",
+        "arn:aws:s3:::${var.s3_bucket_name}/*.png",
+        "arn:aws:s3:::${var.s3_bucket_name}/*.pdf"]
       },
     ]
   })
