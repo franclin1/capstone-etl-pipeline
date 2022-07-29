@@ -30,3 +30,7 @@ variable "dynamoDB_arn" {
   description = "ARN of my dynamoDB"
   type = string 
 }
+variable "dynamoDB_name" {
+  description = "name of my dynamoDB"
+  type = string 
+}

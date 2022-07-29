@@ -62,5 +62,6 @@ module "fargate_endpoint" {
   publicsubnet2_id = module.vpc.publicsubnet2_id
   security_group_id = module.vpc.security_group_id
   dynamoDB_arn =  module.dynamoDB.dynamoDB_arn
+  dynamoDB_name = module.dynamoDB.dynamoDB_name
 }
 
