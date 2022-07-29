@@ -18,7 +18,7 @@ jobs:
       - name: setup s3 backend
         run: |
           cd infrastructure
-          sh setup_terraform_state_bucket.sh
+          sh setting_up_state_s3.sh
       - name: building lambda source codes
         run: |
           cd src
