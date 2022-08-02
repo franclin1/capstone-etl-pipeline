@@ -95,7 +95,7 @@ def parse_invoice_from_file(file_data):
                     index = search.start()
                     while index > 0:
                         if block_text[index] == " ":
-                            invoice_number = block_text[index+1:-1]
+                            invoice_number = block_text[index+1:]
                             break
                         index = index - 1
     id = str(datetime.now())
