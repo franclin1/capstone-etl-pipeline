@@ -62,6 +62,6 @@ resource "aws_security_group" "inbound_outbound" {
     ipv6_cidr_blocks = ["::/0"]
   }
   tags = {
-    Name = "P22+88open"
+    Name = "80open"
   }
 }
