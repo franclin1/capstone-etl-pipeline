@@ -7,7 +7,6 @@ s3 = boto3.resource("s3")
 dynamoDB = boto3.resource("dynamodb")
 textract = boto3.client("textract")
 dynamoTable_pos = dynamoDB.Table("Positions")
-dynamoTable_invoice = dynamoDB.Table("Invoices")
 s3_source_bucket_name = os.environ["s3_bucket_name"]
 s3_bucket = s3.Bucket(s3_source_bucket_name)
 
@@ -115,15 +114,6 @@ def put_positons_to_dynamodb_pos(invoice):
             )
         return response
 
-def put_invoice_no_to_dynamodb_invoice(invoice):     
-        response = dynamoTable_invoice.put_item(
-        Item={   
-                "Id" : invoice.id,
-                'Invoice No.': invoice.invoice_number
-            }
-        )
-        return response
-
 def delete_file_from_s3(file_name):
     s3.Object(s3_source_bucket_name, file_name).delete()
 
@@ -139,7 +129,6 @@ def lambda_handler(event, context):
     invoice = parse_invoice_from_file(file_data)
     invoice.positions = positions
     put_positons_to_dynamodb_pos(invoice)
-    #put_invoice_no_to_dynamodb_invoice(invoice)
     delete_file_from_s3(file_name)
 
 

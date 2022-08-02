@@ -2,17 +2,28 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Invoice upload frontend</title>
+        <link href="{{ url_for('static', path='upload_data/upload_data.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
-<body>
-<h1>Invoice Upload</h1>
-<link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
-<form action="upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="receipt_image">
-    <p>Drag your invoice here or click</p>
-    <button type="submit">Upload invoice</button>
-  </form>
-
+    <body>
+        <div class="container">
+            <div class="card">
+              <h3>Upload Invoice</h3>
+              <div class="drop_box">
+                <header>
+                  <h4>Select Invoice here</h4>
+                </header>
+                <p>Files Supported: PDF, JPEG or PNG</p>
+                <form action="upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="receipt_image">
+                <button type="submit">Upload invoice</button>
+              </div>
+              </form>
+            </div>
+          </div>
 </body>
 </html>
+
 

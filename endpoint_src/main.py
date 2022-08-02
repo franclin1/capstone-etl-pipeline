@@ -27,8 +27,7 @@ def write_home(request: Request):
 @app.get("/present", response_class=HTMLResponse)
 def write_home(request: Request):
     data = present_data()
-    headings = ("Productname", "Price", "Quantity", "Invoice_No")
-    return templates.TemplateResponse("present_data.html", {"request": request, "data" : data, "headings": headings})
+    return templates.TemplateResponse("present_data.html", {"request": request, "data" : data})
 
 
 
