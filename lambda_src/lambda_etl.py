@@ -2,6 +2,7 @@ from datetime import datetime
 import boto3
 import re
 import os
+import uuid
 
 s3 = boto3.resource("s3")
 dynamoDB = boto3.resource("dynamodb")
@@ -72,9 +73,8 @@ def parse_positions_from_file(file_data):
                     item_name = LineItemExpenseFields[1]["ValueDetection"]["Text"]
                     item_quantity = LineItemExpenseFields[2]["ValueDetection"]["Text"]
                     item_price = LineItemExpenseFields[4]["ValueDetection"]["Text"]
-                    id = "Pos "+str(pos_count)
-                    pos_count += 1
-                    
+                    id = str(uuid.uuid4())
+                     
                     position = Position(id, item_name, item_quantity, item_price)
                     if list_contains_items(position, positions):
                         continue
