@@ -7,7 +7,7 @@ import uuid
 s3 = boto3.resource("s3")
 dynamoDB = boto3.resource("dynamodb")
 textract = boto3.client("textract")
-dynamoTable_pos = dynamoDB.Table("Positions")
+dynamoTable_pos = os.environ["dynamoDB_name"]
 s3_source_bucket_name = os.environ["s3_bucket_name"]
 s3_bucket = s3.Bucket(s3_source_bucket_name)
 
