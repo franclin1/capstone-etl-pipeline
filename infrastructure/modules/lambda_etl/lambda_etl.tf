@@ -9,6 +9,7 @@ resource "aws_lambda_function" "extract_transform_load" {
   environment {
     variables = {
     s3_bucket_name = var.s3_bucket_name
+    dynamoDB_name = var.dynamoDB_name
     }
   }
 }

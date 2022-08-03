@@ -10,3 +10,7 @@ variable "dynamoDB_arn" {
   description = "account_id"
   type        = string
 }
+variable "dynamoDB_name" {
+  description = "account_id"
+  type        = string
+}

@@ -1,4 +1,3 @@
-from datetime import datetime
 import boto3
 import re
 import os
@@ -7,19 +6,20 @@ import uuid
 s3 = boto3.resource("s3")
 dynamoDB = boto3.resource("dynamodb")
 textract = boto3.client("textract")
-dynamoTable_pos = os.environ["dynamoDB_name"]
+dynamoTable_pos_name = os.environ["dynamoDB_name"]
 s3_source_bucket_name = os.environ["s3_bucket_name"]
+dynamoTable_pos = dynamoDB.Table(dynamoTable_pos_name)
 s3_bucket = s3.Bucket(s3_source_bucket_name)
 
 class Invoice:
   def __init__(self, id, invoice_number):
-    self.id = id
+    self.id =  id
     self.invoice_number = invoice_number
     self.positions = []
 
 class Position:
   def __init__(self, id, item, quantity, price):
-    self.id = id 
+    self.id = id
     self.item = item
     self.quantity = quantity
     self.price = price
@@ -61,7 +61,6 @@ def parse_positions_from_file(file_data):
     receipt = file_data
     expensedocuments = receipt["ExpenseDocuments"]
     positions = []
-    pos_count = 1
     for category in expensedocuments:
         #maybe reverse
         if "LineItemGroups" in category:
@@ -73,8 +72,8 @@ def parse_positions_from_file(file_data):
                     item_name = LineItemExpenseFields[1]["ValueDetection"]["Text"]
                     item_quantity = LineItemExpenseFields[2]["ValueDetection"]["Text"]
                     item_price = LineItemExpenseFields[4]["ValueDetection"]["Text"]
-                    id = str(uuid.uuid4())
-                     
+                    id =  id = str(uuid.uuid4())
+
                     position = Position(id, item_name, item_quantity, item_price)
                     if list_contains_items(position, positions):
                         continue
@@ -98,7 +97,7 @@ def parse_invoice_from_file(file_data):
                             invoice_number = block_text[index+1:]
                             break
                         index = index - 1
-    id = str(datetime.now())
+    id = str(uuid.uuid4())
     return Invoice(id, invoice_number)
 
 def put_positons_to_dynamodb_pos(invoice):

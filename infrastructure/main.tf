@@ -28,9 +28,11 @@ module "dynamoDB" {
 module "lambda_etl" {
 	source = "./modules/lambda_etl"
   s3_bucket_name = module.image_storage.s3_bucket_name
-  dynamoDB_arn = module.dynamoDB.dynamoDB_arn
   s3_bucket_arn = module.image_storage.s3_bucket_arn
+  dynamoDB_arn = module.dynamoDB.dynamoDB_arn
+  dynamoDB_name = module.dynamoDB.dynamoDB_name
 }
+
 module "lambda_differentiate" {
 	source = "./modules/lambda_differentiate"
   s3_bucket_name = module.image_storage.s3_bucket_name
