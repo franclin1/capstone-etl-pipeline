@@ -1,6 +1,12 @@
 from lambda_etl import Position
 import uuid
 
+ITEM_NAME_INDEX = 1
+ITEM_QUANTITY_INDEX = 2 
+ITEM_PRICE_INDEX = 4
+
+
+
 def list_contains_items(position, positions):
     if position in positions:
             return True 
@@ -14,15 +20,14 @@ def parse_positions_from_file(file_data):
         if not "LineItemGroups" in category:
             continue
         LineItemGroups = category["LineItemGroups"]
-        for LineItem in LineItemGroups:
-            LineItems = LineItem["LineItems"]
-            for LineItemExpenseField in LineItems:
-                LineItemExpenseFields = LineItemExpenseField["LineItemExpenseFields"]
-                item_name = LineItemExpenseFields[1]["ValueDetection"]["Text"]
-                item_quantity = LineItemExpenseFields[2]["ValueDetection"]["Text"]
-                item_price = LineItemExpenseFields[4]["ValueDetection"]["Text"]
-                id =  id = str(uuid.uuid4())
-
+        for LineItemGroup in LineItemGroups:
+            LineItems = LineItemGroup["LineItems"]
+            for LineItem in LineItems:
+                LineItemExpenseFields = LineItem["LineItemExpenseFields"]
+                item_name = LineItemExpenseFields[ITEM_NAME_INDEX]["ValueDetection"]["Text"]
+                item_quantity = LineItemExpenseFields[ITEM_QUANTITY_INDEX]["ValueDetection"]["Text"]
+                item_price = LineItemExpenseFields[ITEM_PRICE_INDEX]["ValueDetection"]["Text"]
+                id = str(uuid.uuid4())
                 position = Position(id, item_name, item_quantity, item_price)
                 if list_contains_items(position, positions):
                     continue
