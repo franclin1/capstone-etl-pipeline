@@ -1,6 +1,6 @@
 from lambda_etl import dynamoTable_pos, s3, s3_source_bucket_name
 
-def put_positons_to_dynamodb_pos(invoice):
+def put_positions_to_dynamodb_pos(invoice):
         for position in invoice.positions:
             response = dynamoTable_pos.put_item(
             Item={   

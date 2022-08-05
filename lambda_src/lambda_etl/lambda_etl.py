@@ -2,7 +2,7 @@ import boto3
 import os
 from parse_positions import parse_positions_from_file
 from parse_invoice_no import parse_invoice_from_file
-from put_data_to_db import put_positons_to_dynamodb_pos, delete_file_from_s3
+from put_data_to_db import put_positions_to_dynamodb_pos, delete_file_from_s3
 
 s3 = boto3.resource("s3")
 dynamoDB = boto3.resource("dynamodb")
@@ -65,7 +65,7 @@ def lambda_handler(event, context):
     file_data = fetch_invoice_data_from_file(file_name) 
     invoice = parse_invoice_from_file(file_data)
     invoice.positions = positions
-    put_positons_to_dynamodb_pos(invoice)
+    put_positions_to_dynamodb_pos(invoice)
     delete_file_from_s3(file_name)
 
 
