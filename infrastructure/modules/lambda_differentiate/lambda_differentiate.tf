@@ -5,6 +5,7 @@ resource "aws_lambda_function" "differentiate_input_images" {
   function_name = "differentiate_input_images"
   role          = aws_iam_role.differentiate_lambda_role.arn
   timeout       = 60
+  memory_size = 1024
   handler = "lambda_src/lambda_differentiate.lambda_handler"
   runtime = "python3.9"
 
