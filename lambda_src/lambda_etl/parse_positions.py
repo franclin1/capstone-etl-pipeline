@@ -4,6 +4,8 @@ import uuid
 ITEM_NAME_INDEX = 1
 ITEM_QUANTITY_INDEX = 2 
 ITEM_PRICE_INDEX = 4
+ITEM_DICT = "ValueDetection"
+ITEM_KEY = "Text"
 
 
 
@@ -24,9 +26,9 @@ def parse_positions_from_file(file_data):
             LineItems = LineItemGroup["LineItems"]
             for LineItem in LineItems:
                 LineItemExpenseFields = LineItem["LineItemExpenseFields"]
-                item_name = LineItemExpenseFields[ITEM_NAME_INDEX]["ValueDetection"]["Text"]
-                item_quantity = LineItemExpenseFields[ITEM_QUANTITY_INDEX]["ValueDetection"]["Text"]
-                item_price = LineItemExpenseFields[ITEM_PRICE_INDEX]["ValueDetection"]["Text"]
+                item_name = LineItemExpenseFields[ITEM_NAME_INDEX][ITEM_DICT][ITEM_KEY]
+                item_quantity = LineItemExpenseFields[ITEM_QUANTITY_INDEX][ITEM_DICT][ITEM_KEY]
+                item_price = LineItemExpenseFields[ITEM_PRICE_INDEX][ITEM_DICT][ITEM_KEY]
                 id = str(uuid.uuid4())
                 position = Position(id, item_name, item_quantity, item_price)
                 if list_contains_items(position, positions):
