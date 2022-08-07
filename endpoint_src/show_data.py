@@ -16,7 +16,7 @@ def get_data():
 def map_data(items_list):
     item=[]
     for element in items_list:
-        item_tuple = (element["Item"],element["Price"],element["Quantity"],element["Invoice_No"])
+        item_tuple = (element["Item"],element["Price"],element["Vat"],element["Quantity"],element["Invoice_No"])
         item.append(item_tuple)
     return item
 

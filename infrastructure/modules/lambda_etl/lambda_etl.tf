@@ -4,7 +4,7 @@ resource "aws_lambda_function" "extract_transform_load" {
   role          = aws_iam_role.etl_lambda_role.arn
   timeout       = 60
   memory_size = 1024
-  handler = "lambda_src/lambda_etl.lambda_handler"
+  handler = "lambda_src/lambda_etl/lambda_etl.lambda_handler"
   runtime = "python3.9"
 
   environment {
