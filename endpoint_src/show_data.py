@@ -22,5 +22,5 @@ def map_data(items_list):
 
 def present_data():
     items_list = get_data()
-    data = map_data(items_list)
-    return data
+    return map_data(items_list)
+   
