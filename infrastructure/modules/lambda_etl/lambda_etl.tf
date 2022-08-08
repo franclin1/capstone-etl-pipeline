@@ -3,12 +3,14 @@ resource "aws_lambda_function" "extract_transform_load" {
   function_name = "extract_transform_load"
   role          = aws_iam_role.etl_lambda_role.arn
   timeout       = 60
-  handler = "lambda_src/lambda_etl.lambda_handler"
+  memory_size = 1024
+  handler = "lambda_src/lambda_etl/lambda_etl.lambda_handler"
   runtime = "python3.9"
 
   environment {
     variables = {
     s3_bucket_name = var.s3_bucket_name
+    dynamoDB_name = var.dynamoDB_name
     }
   }
 }
